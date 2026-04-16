@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎉</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.container {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-top: 40px;
+    animation: fadeIn 2s ease;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin: 15px 0;
+    opacity: 0.9;
+}
+
+.message {
+    margin: 20px 0;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 25px;
+    background: white;
+    color: #ff4e8a;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Confetti canvas */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    h1 { font-size: 2rem; }
+    .message { font-size: 0.95rem; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+    <h1>🎂 Happy Birthday Dad 🎉</h1>
+    <h2>You mean the world to me ❤️</h2>
+
+    <p class="message">
+        Dear Dad,<br><br>
+        Thank you for being my guide, my strength, and my inspiration.  
+        Your love and support have shaped my life in the best way possible.  
+        I’m so grateful for everything you do.<br><br>
+        Wishing you a day full of joy and a year full of success and happiness! 🎈
+    </p>
+
+    <button onclick="startConfetti()">Celebrate 🎉</button>
+</div>
+
+<script>
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+
+function createConfetti() {
+    for (let i = 0; i < 150; i++) {
+        confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 2,
+            d: Math.random() * 50,
+            color: "hsl(" + Math.random() * 360 + ",100%,50%)",
+            tilt: Math.floor(Math.random() * 10) - 10
+        });
+    }
+}
+
+function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach((c, i) => {
+        ctx.beginPath();
+        ctx.fillStyle = c.color;
+        ctx.fillRect(c.x, c.y, c.r, c.r);
+    });
+    updateConfetti();
+}
+
+function updateConfetti() {
+    confetti.forEach((c, i) => {
+        c.y += Math.cos(c.d) + 2;
+        c.x += Math.sin(c.d);
+
+        if (c.y > canvas.height) {
+            confetti[i] = {
+                ...c,
+                y: -10,
+                x: Math.random() * canvas.width
+            };
+        }
+    });
+}
+
+let animation;
+
+function startConfetti() {
+    if (!confetti.length) createConfetti();
+    function animate() {
+        drawConfetti();
+        animation = requestAnimationFrame(animate);
+    }
+    animate();
+}
+</script>
+
+</body>
+</html>
